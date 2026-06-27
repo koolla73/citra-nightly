@@ -46,17 +46,17 @@ jobs:
         shell: cmd
         run: |
           mkdir build && cd build
-          cmake .. \
-          -DCMAKE_BUILD_TYPE=Release \
-          -G Ninja \
-          -DCMAKE_CXX_STANDARD=17 \
-          -DCITRA_USE_BUNDLED_QT=OFF \
-          -DCITRA_USE_CCACHE=OFF \
-          -DENABLE_COMPATIBILITY_LIST_DOWNLOAD=OFF \
-          -DENABLE_MF=ON \
-          -DENABLE_SDL2=OFF \
-          -DENABLE_WEB_SERVICE=OFF \
-          -DOPENSSL_DLL_DIR="C:\Program Files\OpenSSL\bin" \
+          cmake .. ^
+          -DCMAKE_BUILD_TYPE=Release ^
+          -G Ninja ^
+          -DCMAKE_CXX_STANDARD=17 ^
+          -DCITRA_USE_BUNDLED_QT=OFF ^
+          -DCITRA_USE_CCACHE=OFF ^
+          -DENABLE_COMPATIBILITY_LIST_DOWNLOAD=OFF ^
+          -DENABLE_MF=ON ^
+          -DENABLE_SDL2=OFF ^
+          -DENABLE_WEB_SERVICE=OFF ^
+          -DOPENSSL_DLL_DIR="C:\Program Files\OpenSSL\bin" ^
           -DQt5_DIR="C:/Qt/Qt/Qt-5.15.19/lib/cmake/Qt5"
           ninja
         
