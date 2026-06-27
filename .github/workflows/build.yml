@@ -47,7 +47,7 @@ jobs:
         if: ${{ matrix.target == 'msvc' }}
         
       - name: Install extra tools (MSVC)
-        run: choco install ninja wget
+        run: choco install wget
         if: ${{ matrix.target == 'msvc' }}
         
       - name: Build
@@ -57,15 +57,16 @@ jobs:
           cmake .. \
           -DCMAKE_BUILD_TYPE=Release \
           -G Ninja \
-          -DCITRA_USE_CCACHE=OFF \
-          -DENABLE_QT_TRANSLATION=OFF \
           -DCITRA_ENABLE_COMPATIBILITY_REPORTING=${ENABLE_COMPATIBILITY_REPORTING:-"OFF"} \
+          -DCITRA_USE_CCACHE=OFF \
           -DENABLE_COMPATIBILITY_LIST_DOWNLOAD=OFF \
-          -DUSE_DISCORD_PRESENCE=OFF \
-          -DENABLE_MF=ON \
           -DENABLE_FFMPEG_VIDEO_DUMPER=OFF \
-          -DQt5_DIR="C:/Qt/Qt-5.15.19/lib/cmake/Qt5" \
+          -DENABLE_MF=ON \
+          -DENABLE_QT_TRANSLATION=OFF \
+          -DENABLE_SDL2=OFF \
           -DOPENSSL_DLL_DIR="C:\Program Files\OpenSSL\bin"
+          -DQt5_DIR="C:/Qt/Qt-5.15.19/lib/cmake/Qt5" \
+          -DUSE_DISCORD_PRESENCE=OFF \
           ninja
         
       - name: Pack
