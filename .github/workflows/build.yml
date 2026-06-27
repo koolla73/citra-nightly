@@ -15,9 +15,6 @@ jobs:
       matrix:
         target: ["msvc"]
     env:
-      CCACHE_DIR: ${{ github.workspace }}/.ccache
-      CCACHE_COMPILERCHECK: content
-      CCACHE_SLOPPINESS: time_macros
       OS: windows
       TARGET: ${{ matrix.target }}
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
@@ -50,7 +47,7 @@ jobs:
         if: ${{ matrix.target == 'msvc' }}
         
       - name: Install extra tools (MSVC)
-        run: choco install ccache ninja wget
+        run: choco install ninja wget
         if: ${{ matrix.target == 'msvc' }}
         
       - name: Build
