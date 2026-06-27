@@ -25,6 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
+          ref: 70335a7f4d50c092fb04749ac8d45ebeff1814a3
           submodules: recursive
       - name: Set up cache
         uses: actions/cache@v6
