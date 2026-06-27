@@ -69,11 +69,11 @@ jobs:
           -DUSE_DISCORD_PRESENCE=OFF \
           ninja
         
-      - name: Pack
-        run: ./.ci/pack.sh
-        
       - name: Upload
         uses: actions/upload-artifact@v7
         with:
           name: ${{ env.OS }}-${{ env.TARGET }}
-          path: artifacts/
+          path: ${{ github.workspace }}\build\Release
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 1
