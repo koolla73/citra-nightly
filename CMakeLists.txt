@@ -202,7 +202,7 @@ find_package(Threads REQUIRED)
 
 if (ENABLE_QT)
     if (CITRA_USE_BUNDLED_QT)
-        download_qt_external(5.15.2 QT_PREFIX)
+        download_qt_external(5.15.19 QT_PREFIX)
         list(APPEND CMAKE_PREFIX_PATH ${QT_PREFIX})
     endif()
 
