@@ -24,6 +24,9 @@ jobs:
           ref: 70335a7f4d50c092fb04749ac8d45ebeff1814a3
           submodules: recursive
      
+      - name: Copy modified source code
+        run: cp -R ${{ github.workspace }}/newsrc/* ${{ github.workspace }}
+        
       - name: Download Qt
         run: git clone https://github.com/${{ github.repository_owner }}/Qt-Win-Static C:/
         
