@@ -20,6 +20,7 @@ jobs:
       CCACHE_SLOPPINESS: time_macros
       OS: windows
       TARGET: ${{ matrix.target }}
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
     steps:
       - uses: actions/checkout@v7
         with:
@@ -33,9 +34,19 @@ jobs:
         shell: cmd
         run: |
           "%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\setup.exe" modify --quiet --norestart --includeRecommended --installPath "C:\Program Files\Microsoft Visual Studio\2022\Enterprise" --channelId VisualStudio.15.Release --add Microsoft.VisualStudio.Component.VC.v141.x86.x64
-      
+
+      - name: Download Boost
+        run: |
+          $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12'
+          [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
+          
+          Invoke-WebRequest -UserAgent curl https://sourceforge.net/projects/boost/files/boost-binaries/1.70.0/boost_1_70_0-msvc-14.1-64.exe/download -OutFile boost_1_70_0-msvc-14.1-64.exe
+          .\boost_1_70_0-msvc-14.1-64.exe /sp- /verysilent /suppressmsgboxes /norestart | more
+          
       - name: Set up MSVC
         uses: ilammy/msvc-dev-cmd@v1
+        with:
+          toolset: 14.16
         if: ${{ matrix.target == 'msvc' }}
         
       - name: Install extra tools (MSVC)
@@ -43,7 +54,22 @@ jobs:
         if: ${{ matrix.target == 'msvc' }}
         
       - name: Build
-        run: ./.ci/windows.sh
+        shell: cmd
+        run: |
+          mkdir build && cd build
+          cmake .. \
+          -DCMAKE_BUILD_TYPE=Release \
+          -G Ninja \
+          -DCITRA_USE_CCACHE=OFF \
+          -DENABLE_QT_TRANSLATION=OFF \
+          -DCITRA_ENABLE_COMPATIBILITY_REPORTING=${ENABLE_COMPATIBILITY_REPORTING:-"OFF"} \
+          -DENABLE_COMPATIBILITY_LIST_DOWNLOAD=OFF \
+          -DUSE_DISCORD_PRESENCE=OFF \
+          -DENABLE_MF=ON \
+          -DENABLE_FFMPEG_VIDEO_DUMPER=OFF \
+          -DQt5_DIR="C:/Qt/Qt-5.15.19/lib/cmake/Qt5" \
+          -DOPENSSL_DLL_DIR="C:\Program Files\OpenSSL\bin"
+          ninja
         
       - name: Pack
         run: ./.ci/pack.sh
